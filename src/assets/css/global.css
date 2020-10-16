@@ -1,0 +1,40 @@
+/*全局样式表*/
+html,body,#app{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+.el-breadcrumb {
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.el-table {
+    margin-top: 15px;
+}
+
+.el-pagination {
+    margin-top: 15px;
+}
+
+.content-box {
+    position: absolute;
+    left: 250px;
+    right: 0;
+    top: 70px;
+    bottom: 0;
+    padding-bottom: 40px;
+    background: #f0f0f0;
+}
+
+.content {
+    width: auto;
+    height: 100%;
+    padding: 10px;
+    overflow-y: scroll;
+    box-sizing: border-box;
+}
+
+.content-collapse {
+    left: 65px;
+}
