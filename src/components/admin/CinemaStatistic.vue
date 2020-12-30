@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     async drawFirst () {
-      const myChart = echarts.init(document.getElementById('FirstChart'))
+      const myChart = echarts.init(document.getElementById('FirstChart'), 'light')
       var option = {
         title: { text: '今日排片率' },
         tooltip: {},
@@ -80,7 +80,7 @@ export default {
       myChart.setOption(option)
     },
     async drawSecond () {
-      const myChart = echarts.init(document.getElementById('SecondChart'))
+      const myChart = echarts.init(document.getElementById('SecondChart'), 'light')
       var option = {
         title: { text: '所有电影票房' },
         tooltip: {},
@@ -107,7 +107,7 @@ export default {
       myChart.setOption(option)
     },
     async drawThird () {
-      const myChart = echarts.init(document.getElementById('ThirdChart'))
+      const myChart = echarts.init(document.getElementById('ThirdChart'), 'light')
       var option = {
         title: { text: '每日客单价' },
         tooltip: {},
@@ -133,7 +133,7 @@ export default {
       myChart.setOption(option)
     },
     async drawForth () {
-      const myChart = echarts.init(document.getElementById('ForthChart'))
+      const myChart = echarts.init(document.getElementById('ForthChart'), 'light')
       var option = {
         title: { text: '每日上座率' },
         tooltip: {},

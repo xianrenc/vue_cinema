@@ -11,39 +11,39 @@
             router
         >
             <template v-for="item in items">
-                <template v-if="item.subs">
-                    <el-submenu :index="item.index" :key="item.index">
-                        <template slot="title">
-                            <i :class="item.icon"></i>
-                            <span slot="title">{{ item.title }}</span>
-                        </template>
-                        <template v-for="subItem in item.subs">
-                            <el-submenu
-                                v-if="subItem.subs"
-                                :index="subItem.index"
-                                :key="subItem.index"
-                            >
-                                <template slot="title">{{ subItem.title }}</template>
-                                <el-menu-item
-                                    v-for="(threeItem,i) in subItem.subs"
-                                    :key="i"
-                                    :index="threeItem.index"
-                                >{{ threeItem.title }}</el-menu-item>
-                            </el-submenu>
-                            <el-menu-item
-                                v-else
-                                :index="subItem.index"
-                                :key="subItem.index"
-                            >{{ subItem.title }}</el-menu-item>
-                        </template>
-                    </el-submenu>
-                </template>
-                <template v-else>
+<!--                <template v-if="item.subs">-->
+<!--                    <el-submenu :index="item.index" :key="item.index">-->
+<!--                        <template slot="title">-->
+<!--                            <i :class="item.icon" style="font-size: larger;font-weight: bold"></i>-->
+<!--                            <span slot="title">{{ item.title }}</span>-->
+<!--                        </template>-->
+<!--                        <template v-for="subItem in item.subs">-->
+<!--                            <el-submenu-->
+<!--                                v-if="subItem.subs"-->
+<!--                                :index="subItem.index"-->
+<!--                                :key="subItem.index"-->
+<!--                            >-->
+<!--                                <template slot="title">{{ subItem.title }}</template>-->
+<!--                                <el-menu-item-->
+<!--                                    v-for="(threeItem,i) in subItem.subs"-->
+<!--                                    :key="i"-->
+<!--                                    :index="threeItem.index"-->
+<!--                                >{{ threeItem.title }}</el-menu-item>-->
+<!--                            </el-submenu>-->
+<!--                            <el-menu-item-->
+<!--                                v-else-->
+<!--                                :index="subItem.index"-->
+<!--                                :key="subItem.index"-->
+<!--                            >{{ subItem.title }}</el-menu-item>-->
+<!--                        </template>-->
+<!--                    </el-submenu>-->
+<!--                </template>-->
+<!--                <template v-else>-->
                     <el-menu-item :index="item.index" :key="item.index">
-                        <i :class="item.icon"></i>
-                        <span slot="title">{{ item.title }}</span>
+                        <el-icon :class="item.icon" style="font-size: x-large;font-weight: bolder;margin-right: 5px"></el-icon>
+                        <span slot="title" style="font-size: larger;font-weight: bold">{{ item.title }}</span>
                     </el-menu-item>
-                </template>
+<!--                </template>-->
             </template>
         </el-menu>
     </div>
@@ -57,45 +57,45 @@ export default {
       collapse: false,
       items: [
         {
-          icon: '',
+          icon: 'iconfont icon-dianying',
           index: 'movieManage',
           title: '电影管理'
         },
         {
-          icon: '',
+          icon: 'iconfont icon-yanchurili',
           index: 'scheduleManage',
           title: '排片管理'
         },
         {
-          icon: '',
+          icon: 'iconfont icon-youhuiquan',
           index: 'promotionManage',
           title: '活动管理'
         },
         {
-          icon: '',
+          icon: 'iconfont icon-yingyuan',
           index: 'cinemaManage',
           title: '影院管理'
         },
         {
-          icon: '',
+          icon: 'iconfont icon-paihangbang',
           index: 'cinemaStatistic',
           title: '影院统计'
         },
+        // {
+        //   icon: '',
+        //   index: 'refundManage',
+        //   title: '票务管理'
+        // },
         {
-          icon: '',
-          index: 'refundManage',
-          title: '票务管理'
-        },
-        {
-          icon: '',
+          icon: 'iconfont icon-huiyuan',
           index: 'vipManage',
           title: '会员管理'
-        },
-        {
-          icon: '',
-          index: 'userManage',
-          title: '用户管理'
         }
+        // {
+        //   icon: 'iconfont icon-wode',
+        //   index: 'userManage',
+        //   title: '用户管理'
+        // }
       ]
     }
   },
@@ -127,7 +127,7 @@ export default {
     width: 0;
 }
 .sidebar-el-menu:not(.el-menu--collapse) {
-    width: 250px;
+    width: 150px;
 }
 .sidebar > ul {
     height: 100%;

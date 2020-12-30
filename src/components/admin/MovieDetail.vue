@@ -5,9 +5,9 @@
         <el-col :span="5">
           <img v-bind:src="movie.posterUrl" class="cover"/>
         </el-col>
-        <el-col :span="19">
+        <el-col :span="19" style="line-height: 30px">
           <el-row class="text">
-            名称：{{movie.name}}
+            <div  style="font-size: 20px">名称：{{movie.name}}</div>
           </el-row>
           <el-row class="text">
             类型：{{movie.type}}
@@ -56,9 +56,9 @@
       title="修改电影"
       :visible.sync="dialogVisable"
       width="40%">
-      <div>
+      <div style="line-height: 0px">
         <el-form ref="movieFormRef" v-model="movieForm" label-width="80px" size="mini">
-          <el-form-item label="电影">
+          <el-form-item label="电影" style="font-size: 100px">
             <el-input v-model="movieForm.name" placeholder="请输入电影名称"></el-input>
           </el-form-item>
           <el-form-item label="海报">

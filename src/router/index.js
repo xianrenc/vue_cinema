@@ -45,7 +45,7 @@ const CinemaManage = () => import(/* webpackChunkName: "group-cinema" */ '../com
 const RefundManage = () => import(/* webpackChunkName: "group-cinema" */ '../components/admin/RefundManage')
 
 const VipManage = () => import(/* webpackChunkName: "group-vip" */ '../components/admin/VipManage')
-const UserManage = () => import(/* webpackChunkName: "group-user" */ '../components/admin/UserManage')
+// const UserManage = () => import(/* webpackChunkName: "group-user" */ '../components/admin/UserManage')
 
 const Movie = () => import(/* webpackChunkName: "group-movie" */ '../components/user/Movie')
 const MovieBuy = () => import(/* webpackChunkName: "group-movie" */ '../components/user/MovieBuy')
@@ -113,12 +113,12 @@ const routes = [
       path: '/vipManage',
       component: VipManage,
       meta: { title: '会员管理' }
-    },
-    {
-      path: '/userManage',
-      component: UserManage,
-      meta: { title: '用户管理' }
     }]
+    // {
+    //   path: '/userManage',
+    //   component: UserManage,
+    //   meta: { title: '用户管理' }
+    // }]
   },
   {
     path: '/user',

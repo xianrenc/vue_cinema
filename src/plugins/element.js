@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import { Loading, Steps, Step, Tabs, TabPane, Image, Carousel, CarouselItem, TimePicker, Icon, Tag, Backtop, Dropdown, DropdownItem, DropdownMenu, Link, Collapse, CollapseItem, Drawer, Option, Select, MessageBox, RadioGroup, Radio, DatePicker, Dialog, Pagination, Tooltip, Table, TableColumn, Row, Col, Button, Form, FormItem, Input, Message, Container, Header, Aside, Main, Menu, Submenu, MenuItemGroup, MenuItem, Breadcrumb, BreadcrumbItem, Card } from 'element-ui'
 
+Vue.use(RadioGroup)
+Vue.use(Radio)
 Vue.use(Loading)
 Vue.use(Steps)
 Vue.use(Step)

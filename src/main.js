@@ -4,6 +4,7 @@ import router from './router'
 import './plugins/element.js'
 import './assets/css/global.css'
 import './assets/fonts/iconfont.css'
+import './assets/icon/iconfont.css'
 import axios from 'axios'
 
 // 配置请求根路径

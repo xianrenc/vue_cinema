@@ -11,22 +11,33 @@
     <!--    电影列表-->
     <el-row>
       <el-col :span="18">
-        <h3>正在上映</h3>
+        <div style="margin-top: 10px;margin-bottom: 10px;font-size: larger;font-weight: bold">正在上映</div>
         <template v-for="movie in movieList">
-          <el-col :key="movie.id" :span="6" style="display:flex;justify-content:center;align-items:center">
-            <el-card :body-style="{ padding: '0px' }" class="movie">
+          <el-col :key="movie.id" :span="4" style="display:flex;justify-content:center;align-items:center">
+            <el-card :body-style="{ padding: '0px' }" style="margin: 5px" class="movie">
               <el-row style="text-align: center;height: 200px">
                 <div class="movie-detail" @mouseenter="onMouseOver(movie.id)" @mouseleave="onMouseOut(movie.id)"
                      v-bind:style="{backgroundImage:'url(' + movie.posterUrl + ')'}">
                   <transition name="move" mode="out-in">
                     <div v-show="getSeenList(movie.id)" class="movie-info">
-                      电影：{{movie.name}}<br>
-                      导演：{{movie.director}}<br>
-                      主演：{{movie.starring}}<br>
-                      类型：{{movie.type}}<br>
-                      地区：{{movie.country}}<br>
-                      语言：{{movie.language}}<br>
-                      片长：{{movie.length}}<br>
+                      <div style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;
+                      width: 140px">电影：{{movie.name}}<br></div>
+                      <div style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;
+                      width: 140px">导演：{{movie.director}}<br></div>
+                      <div style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;
+                      width: 140px">主演：{{movie.starring}}<br></div>
+                      <div style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;
+                      width: 140px">类型：{{movie.type}}<br></div>
+                      <div style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;
+                      width: 140px">地区：{{movie.country}}<br></div>
+                      <div style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;
+                      width: 140px">语言：{{movie.language}}<br></div>
+                      <div style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;
+                      width: 140px">片长：{{movie.length}} 分钟<br></div>
+<!--                      类型：{{movie.type}}<br>-->
+<!--                      地区：{{movie.country}}<br>-->
+<!--                      语言：{{movie.language}}<br>-->
+<!--                      片长：{{movie.length}} 分钟<br>-->
                     </div>
                   </transition>
                 </div>
@@ -42,27 +53,55 @@
         </template>
       </el-col>
       <el-col :span="6">
-        <el-card style="margin-top: 10px" :body-style="{ padding: '0px' }">
-          <h1 style="margin-left: 10px">电影票房</h1>
+        <el-card style="margin-top: 10px;padding: 5px" :body-style="{ padding: '0px' }">
+          <div style="font-size: larger;font-weight: bold">电影票房</div>
           <!--          <div v-for="movie in rankList" :key="movie.id">-->
           <!--            {{movie.name}}<br>-->
           <!--            <div style="position: absolute;right: 0">{{movie.islike}}</div>-->
           <!--          </div>-->
-                    <template v-for="(movie,index) in rankList">
-                      <el-row :key="movie.id"
-                              style="margin-bottom: 10px;margin-left: 10px;margin-right: 10px;cursor:pointer"
-                      >
-                        <div @click="getMovieDetail(index)">
-                          <template v-if="index===0">
-                            <div style="font-size: 25px;font-weight: bolder;display: inline">{{index+1}}  {{movie.name}}</div>
-                            <div style="color:red;font-size: 20px;display:inline;position: absolute;right: 0;bottom: 0">{{movie.boxOffice===null?0:movie.boxOffice}} 元</div>
+                    <template>
+                      <el-table
+                        class="rank"
+                        :data="rankList"
+                        :show-header="false"
+                        style="width: 100%"
+                        :row-class-name="tableRowClassName">
+                        <el-table-column
+                          prop="name">
+                          <template slot-scope="scope">
+                            <template v-if="scope.$index===0">
+                              <el-icon class="iconfont icon-huiyuan" style="font-weight: bolder;font-size: x-large;color: orange"></el-icon>
+                            </template>
+                            <span style="cursor: pointer" @click="getMovieDetail(scope.row.name)">
+                              {{scope.row.name}}
+                            </span>
                           </template>
-                          <template v-else>
-                            <div style="font-size: 18px;font-weight: bold;display: inline">{{index+1}}  {{movie.name}}</div>
-                            <div style="color:red;font-size: 15px;display:inline;position: absolute;right: 0;bottom: 0">{{movie.boxOffice===null?0:movie.boxOffice}} 元</div>
+                        </el-table-column>
+                        <el-table-column
+                          align="right"
+                          prop="boxOffice">
+                          <template slot-scope="scope">
+                            <div style="color: red">
+                              {{scope.row.boxOffice===null?0:scope.row.boxOffice}}
+                              <span style="font-size: small"> 万元</span>
+                            </div>
                           </template>
-                        </div>
-                      </el-row>
+                        </el-table-column>
+                      </el-table>
+<!--                      <el-row :key="movie.id"-->
+<!--                              style="margin-bottom: 10px;margin-left: 10px;margin-right: 10px;cursor:pointer"-->
+<!--                      >-->
+<!--                        <div @click="getMovieDetail(index)">-->
+<!--                          <template v-if="index===0">-->
+<!--                            <div style="font-size: 25px;font-weight: bolder;display: inline">{{index+1}}  {{movie.name}}</div>-->
+<!--                            <div style="color:red;font-size: 20px;display:inline;position: absolute;right: 0;bottom: 0">{{movie.boxOffice===null?0:movie.boxOffice}} 元</div>-->
+<!--                          </template>-->
+<!--                          <template v-else>-->
+<!--                            <div style="font-size: 18px;font-weight: bold;display: inline">{{index+1}}  {{movie.name}}</div>-->
+<!--                            <div style="color:red;font-size: 15px;display:inline;position: absolute;right: 0;bottom: 0">{{movie.boxOffice===null?0:movie.boxOffice}} 元</div>-->
+<!--                          </template>-->
+<!--                        </div>-->
+<!--                      </el-row>-->
                     </template>
 
         </el-card>
@@ -97,6 +136,7 @@ export default {
         this.$message.error(res.data.message)
       } else {
         this.rankList = res.data.content
+        this.rankList = this.rankList.slice(0, 5)
       }
     },
     onMouseOver (index) {
@@ -129,6 +169,15 @@ export default {
         // console.log(res.data.content)
         this.movieList = res.data.content
       }
+    },
+    tableRowClassName ({ row, rowIndex }) {
+      row.rowIndex = rowIndex
+      if (rowIndex === 0) {
+        return 'first-row'
+      }// else if (rowIndex === 3) {
+      //   return 'success-row'
+      // }
+      return ''
     }
   }
 }
@@ -150,7 +199,7 @@ export default {
 
   .movie {
     padding: 0px;
-    margin: 20px;
+    margin: 0px;
     height: 240px;
     width: 150px;
   }
@@ -179,9 +228,10 @@ export default {
     color: white;
     font-weight: bold
   }
-
-  .rank.is-active {
-    background-color: #07c4a8 !important;
-    font-weight: bold;
+</style>
+<style>
+  .el-table .first-row {
+    font-size: larger;
+    font-weight: bolder;
   }
 </style>

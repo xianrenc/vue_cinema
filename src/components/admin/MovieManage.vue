@@ -12,34 +12,41 @@
       <!--      搜索-->
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-input placeholder="请输入电影名称" v-model="searchName" clearable>
+          <el-input placeholder="请输入" v-model="searchName" clearable>
             <el-button slot="append" icon="el-icon-search" @click="searchMovie"></el-button>
           </el-input>
         </el-col>
+        <el-col :span="16" style="text-align: right">
+          <el-radio-group v-model="sortType" @change="sort">
+            <el-radio  label="time">按时间排序</el-radio>
+            <el-radio  label="like">按评分排序</el-radio>
+          </el-radio-group>
+<!--          <el-button class="btn" icon="el-icon-sort" @click="sort">按时间排序</el-button>-->
+        </el-col>
       </el-row>
     </el-card>
-    <template v-for="movie in movieList">
+    <template v-for="movie in moviePage">
       <el-card class="movie-card" :key="movie.id" :body-style="{ padding: '5px' }">
         <el-row>
           <el-col :span="3">
-            <img v-bind:src="movie.posterUrl" class="cover"/>
+            <img v-bind:src="movie.posterUrl" class="cover" @click="getDetail(movie.name)" style="cursor: pointer"/>
           </el-col>
-          <el-col :span="21">
-            <el-row class="text">
-              <el-col :span="22">
-                {{movie.name}}
+          <el-col :span="21" style="line-height: 25px;">
+            <el-row class="text" style="margin-left: 10px;margin-right: 30px" >
+              <el-col :span="22" style="font-size: 20px;">
+                <div @click="getDetail(movie.name)">{{movie.name}}</div>
                 <el-tag v-if="movie.status==0" type="success" effect="dark" size="small">热映中</el-tag>
                 <el-tag v-else type="danger" effect="dark" size="small">已下架</el-tag>
               </el-col>
               <el-col :span="2">
-                <i class="el-icon-star-on" style="color: orange"></i>{{movie.islike}}人想看
+<!--                <i class="el-icon-star-on" style="color: orange"></i>{{movie.islike}}人想看-->
               </el-col>
             </el-row>
-            <el-row class="text">
+            <el-row class="text" style="margin-left: 10px">
               {{movie.type}}
             </el-row>
-            <el-row class="text">
-              {{movie.country}}/{{movie.length}}
+            <el-row class="text" style="margin-left: 10px">
+              {{movie.country}}/{{movie.length}}分钟
             </el-row>
             <!--            <el-row class="text">-->
             <!--              {{movie.startDate}}-->
@@ -53,10 +60,10 @@
             <!--            <el-row class="text">-->
             <!--              主演：{{movie.starring}}-->
             <!--            </el-row>-->
-            <el-row class="text">
+            <el-row class="text" style="margin-left: 10px;margin-right: 50px">
               {{movie.description}}
             </el-row>
-            <el-row class="text">
+            <el-row class="text" style="margin-top:30px;margin-right: 60px;margin-bottom: 20px">
               <div class="detail">
                 <el-link @click="getDetail(movie.name)">详情</el-link>
               </div>
@@ -70,12 +77,27 @@
         <div><h4>无符合要求的电影</h4></div>
       </el-card>
     </template>
+    <el-card :body-style="{ padding: '5px' }" >
+      <!--    分页区域-->
+      <el-pagination
+        style="margin: 5px;padding: 0px"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pagenum"
+        :page-sizes="[1, 2, 5,10]"
+        :page-size="queryInfo.pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="this.movieList.length"
+        align="center"
+      >
+      </el-pagination>
+    </el-card>
     <!--  添加影片对话框-->
     <el-dialog
       title="上架电影"
       :visible.sync="dialogVisable"
       width="40%">
-      <div>
+      <div style="line-height: 100px">
         <el-form ref="movieFormRef" v-model="movieForm" label-width="80px" size="mini">
           <el-form-item label="电影">
             <el-input v-model="movieForm.name" placeholder="请输入电影名称"></el-input>
@@ -131,6 +153,12 @@
 export default {
   data () {
     return {
+      queryInfo: {
+        query: '',
+        pagenum: 1,
+        pagesize: 5
+      },
+      sortType: 'time',
       searchName: '',
       dialogVisable: false,
       movieForm: {
@@ -146,79 +174,26 @@ export default {
         length: '',
         description: ''
       },
-      movieList: [
-        // {
-        //   id: 1,
-        //   name: '信条',
-        //   posterUrl: 'https://images.weserv.nl/?url=https://bkimg.cdn.bcebos.com/pic/94cad1c8a786c9177f3ecead307467cf3bc79f3df947?x-bce-process=image/resize,m_lfit,w_268,limit_1/format,f_jpg',
-        //   director: '克里斯托弗·诺兰 ',
-        //   screenWriter: '克里斯托弗·诺兰',
-        //   starring: '约翰·大卫·华盛顿、罗伯特·帕丁森、伊丽莎白·德比齐、迈克尔·凯恩、肯尼思·布拉纳 ',
-        //   type: '科幻、动作、惊悚、喜剧',
-        //   country: '美国、英国 ',
-        //   language: '英语 ',
-        //   startDate: '2020年9月4日',
-        //   length: '150 分钟 ',
-        //   description: '一群蒙面匪徒闯入乌克兰一个歌剧院劫持人质，真实目标是要抢夺一个装有神秘物质的手提箱。主角和同伴假扮成特警也要抢夺手提箱，但任务离奇失败，主角为保护秘密“被假死”。主角在假死被救后，被赋予新的更大的任务，通过女科学家的帮助，主角从射出的子弹倒着回到枪膛的实验中了解到“逆转时间”的概念，并被告知整个世界可能因为逆时间技术消失。主角从此不再有身份，加入“信条”组织，成为无名氏，他的任务是保护全世界不要被逆时间毁灭。为了阻止萨特企图毁灭人类的行为，以无名氏、尼尔和凯特为首的队伍们来到萨特的基地，利用逆时间完成了任务，毁掉了萨特手中的时间炸弹，最终阻止了人类世界在逆时间中灭亡',
-        //   status: 0,
-        //   islike: 25
-        // },
-        // {
-        //   id: 2,
-        //   name: '流浪地球',
-        //   posterUrl: 'https://images.weserv.nl/?url=https://bkimg.cdn.bcebos.com/pic/4bed2e738bd4b31cd25411778ad6277f9f2ff896?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2UxODA=,g_7,xp_5,yp_5',
-        //   director: '郭帆',
-        //   screenWriter: '龚格尔、严东旭 、郭帆 、叶俊策 、杨治学 、吴荑 、叶濡畅',
-        //   starring: '吴京、屈楚萧、赵今麦、李光洁、吴孟达',
-        //   type: '科幻',
-        //   country: '中国 ',
-        //   language: '汉语普通话',
-        //   startDate: '2019年2月5日',
-        //   length: '125 分钟',
-        //   description: '近年来，科学家们发现太阳急速衰老膨胀，短时间内包括地球在内的整个太阳系都将被太阳所吞没。为了自救，人类提出一个名为“流浪地球”的大胆计划，即倾全球之力在地球表面建造上万座发动机和转向发动机，推动地球离开太阳系，用2500年的时间奔往新家园。' +
-        //       '中国航天员刘培强（吴京饰）在儿子刘启四岁那年前往领航员空间站，和国际同侪肩负起领航者的重任。转眼刘启（屈楚萧饰）长大，他带着妹妹韩朵朵（赵今麦饰）偷偷跑到地表，偷开外公韩子昂（吴孟达饰）的运输车，结果不仅遭到逮捕，还遭遇了全球发动机停摆的事件。为了修好发动机，阻止地球坠入木星，全球开始展开饱和式营救，连刘启他们的车也被强征加入。在与时间赛跑的过程中，无数的人前仆后继，奋不顾身，只为延续百代子孙生存的希望',
-        //   status: 1,
-        //   islike: 13
-        // },
-        // {
-        //   id: 3,
-        //   name: '八佰',
-        //   posterUrl: 'https://images.weserv.nl/?url=http://web-txpc.oss-cn-shanghai.aliyuncs.com/movie/20200810175530_571.jpg',
-        //   director: '管虎',
-        //   screenWriter: '管虎、葛瑞',
-        //   starring: '黄志忠、欧豪、王千源、姜武、张译、杜淳、魏晨、李晨、俞灏明',
-        //   type: '战争 历史',
-        //   country: '中国',
-        //   language: '汉语普通话',
-        //   startDate: '2020年8月21日',
-        //   length: '147 分钟',
-        //   description: '1937年淞沪会战末期，中日双方激战已持续三个月，上海濒临沦陷。第88师262旅524团团副谢晋元杜淳饰）率420余人，孤军坚守最后的防线，留守上海四行仓库。与租界一河之隔，造就了罕见的被围观的战争。为壮声势，实际人数四百人而对外号称八百人。“八百壮士”奉命留守上海闸北，在苏州河畔的四行仓库鏖战四天，直至10月30日才获令撤往英租界',
-        //   status: 0,
-        //   islike: 53
-        // },
-        // {
-        //   id: 4,
-        //   name: '花木兰',
-        //   posterUrl: 'https://images.weserv.nl/?url=https://img.alicdn.com/bao/uploaded/i3/TB195acTuL2gK0jSZFmXXc7iXXa_.jpg_300x300.jpg',
-        //   director: '妮基·卡罗',
-        //   screenWriter: '劳伦·海尼克、伊丽莎白·马丁、里克·杰法、阿曼达·斯尔沃 ',
-        //   starring: '刘亦菲、甄子丹、巩俐、李连杰、安柚鑫、李截、郑佩佩、赵家玲、马志、唐莎娜',
-        //   type: '动作、剧情、冒险',
-        //   country: '美国、中国',
-        //   language: '英语、汉语普通话 ',
-        //   startDate: '2020年9月11日',
-        //   length: '115 分钟',
-        //   description: '中国的皇帝颁布法令，要求每家出一名男子服兵役，抵御北方侵略者。作为一名受人尊敬的战士的长女，花木兰（刘亦菲饰）站出来替生病的父亲应征入伍。她装扮成男人，化名花军，经受了种种考验，同时必须利用内在的力量，接纳自己真正的潜能。这是一场史诗般的旅程，让木兰蜕变为一名受人尊敬的战士，也赢得来自国家与骄傲的父亲的尊重',
-        //   status: 0,
-        //   islike: 23
-        // }
-      ]
+      movieList: [],
+      moviePage: []
     }
   },
   created () {
     this.getMovieList()
   },
   methods: {
+    handleSizeChange (newSize) {
+      this.queryInfo.pagesize = newSize
+      this.getMoviePage()
+    },
+
+    handleCurrentChange (newPage) {
+      this.queryInfo.pagenum = newPage
+      this.getMoviePage()
+    },
+    getMoviePage () {
+      this.moviePage = this.movieList.slice((this.queryInfo.pagenum - 1) * this.queryInfo.pagesize, (this.queryInfo.pagenum) * this.queryInfo.pagesize)
+    },
     async getMovieList () {
       const res = await this.$http.get('/movie/all')
       if (res.data.success === false) {
@@ -226,7 +201,29 @@ export default {
       } else {
         // console.log(res.data.content)
         this.movieList = res.data.content
+        // this.movieList.sort(this.compare('status'))
+        this.movieList.sort(this.compareByTime('startDate'))
+        this.getMoviePage()
       }
+    },
+    compare (property) {
+      return function (a, b) {
+        var value1 = a[property]
+        var value2 = b[property]
+        return value1 - value2
+      }
+    },
+    compareByTime (property) {
+      return function (a, b) {
+        var value1 = new Date(a[property])
+        var value2 = new Date(b[property])
+        return value2 - value1
+      }
+    },
+    sort () {
+      if (this.sortType === 'time') { this.movieList.sort(this.compareByTime('startDate')) }
+      if (this.sortType === 'like') { this.movieList.sort(this.compare('length')) }
+      this.getMoviePage()
     },
     getDetail (name) {
       this.$router.push({ path: 'movieDetail', query: { movieName: name } })
@@ -249,6 +246,7 @@ export default {
         this.$message.error(res.data.message)
       } else {
         this.movieList = res.data.content
+        this.getMoviePage()
         // console.log(res.data.content)
         // this.$message.success('搜索电影成功!')
       }

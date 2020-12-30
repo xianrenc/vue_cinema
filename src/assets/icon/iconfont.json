@@ -1,0 +1,58 @@
+{
+  "id": "2243075",
+  "name": "影院",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "11372668",
+      "name": "会员",
+      "font_class": "huiyuan",
+      "unicode": "e8b1",
+      "unicode_decimal": 59569
+    },
+    {
+      "icon_id": "11372680",
+      "name": "排行榜",
+      "font_class": "paihangbang",
+      "unicode": "e8b3",
+      "unicode_decimal": 59571
+    },
+    {
+      "icon_id": "2675007",
+      "name": "我的",
+      "font_class": "wode",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "2811213",
+      "name": "演出日历",
+      "font_class": "yanchurili",
+      "unicode": "e644",
+      "unicode_decimal": 58948
+    },
+    {
+      "icon_id": "11372654",
+      "name": "电影",
+      "font_class": "dianying",
+      "unicode": "e8ae",
+      "unicode_decimal": 59566
+    },
+    {
+      "icon_id": "11372734",
+      "name": "影院",
+      "font_class": "yingyuan",
+      "unicode": "e8c0",
+      "unicode_decimal": 59584
+    },
+    {
+      "icon_id": "11372737",
+      "name": "优惠券",
+      "font_class": "youhuiquan",
+      "unicode": "e8c1",
+      "unicode_decimal": 59585
+    }
+  ]
+}

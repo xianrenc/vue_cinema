@@ -10,7 +10,7 @@
         </ul>
         <div class="tags-close-box">
             <el-dropdown @command="handleTags">
-                <el-button size="small" type="primary" style="margin-top: 3px">
+                <el-button size="small" style="margin-top: 3px;color: white;background-color: #07c4a8;">
                     标签选项<i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
                 <el-dropdown-menu size="small" slot="dropdown">
